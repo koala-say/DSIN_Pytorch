@@ -1,6 +1,6 @@
-# HIN-CAM: Hyperfunction-based Implicit Neural Compression For Any Medical Image
+# DSIN: Hyperfunction-based Implicit Neural Compression For Any Medical Image
 
-Welcome to **HIN-CAM**!  
+Welcome to **DSIN**!  
 This repository provides the official implementation of our paper *"DSIN: Dynamic System-empowered Implicit Neural Representation for Compressing Any Medical Image"*. It is designed to help researchers and developers quickly understand, reproduce, and extend our latest work on neural medical image compression.  
 
 
