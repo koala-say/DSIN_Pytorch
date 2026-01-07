@@ -5,6 +5,7 @@ This repository provides the official implementation of our paper *"DSIN: Dynami
 
 
 ## System requirements
+- Linux: Ubuntu 16.04
 - Graphics: Nvidia GPU (RTX 4090 recommended)
 - Anaconda3
 - PyTorch
@@ -25,10 +26,12 @@ pip install -r requirements.txt
 ```
 
 ## Usage Guide
-### 1. INR Compression
-
-``` python INR_inference.py ```
+### 1. INR Compression and DeCompression
+ 
+``` python INR_inference.py -dataset file_path```
 - The compressed results are saved in: output/unify/${dataset}/${params}_train/model_train_best.pth
+
+``` python INR_inference.py -weigth model.pth```
 - The decompressed files are saved in: output/unify/${dataset}/${params}_eval/visualize
 
 ### 2. HyperFunction Compression
@@ -36,6 +39,8 @@ pip install -r requirements.txt
 - This command executes the inference script hyperF_inference.py with the trained model checkpoint model_train_best.pth
 - The compressed result will be located in : compressed_result/${paramters}/Compressed_Dir
 - The decompressed data will be located in : compressed_result/${paramters}/Back_Params.pth
+
+
 
 
 
