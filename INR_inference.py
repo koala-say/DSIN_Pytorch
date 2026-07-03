@@ -23,7 +23,7 @@ def main():
     parser.add_argument('--scale', type=int, default=1, help='scale-up facotr for data transformation,  added to suffix!!!!')
     parser.add_argument('--frame_gap', type=int, default=1, help='frame selection gap')
     parser.add_argument('--augment', type=int, default=0, help='augment frames between frames,  added to suffix!!!!')
-    parser.add_argument('--dataset', type=str, default='', help='dataset',)
+    parser.add_argument('--dataset', type=str, default='/home/songhanxiao/code_python/compress_code/segment/Data_AbdomenCT-1K/AbdomenCT-1K_3472_norm', help='dataset',)
     parser.add_argument('--test_gap', default=1, type=int, help='evaluation gap')
     parser.add_argument('--embed', type=str, default='1.25_80', help='base value/embed length for position encoding')
     parser.add_argument('--stem_dim_num', type=str, default='1024_1', help='hidden dimension and length')
@@ -61,7 +61,9 @@ def main():
     parser.add_argument('--manualSeed', type=int, default=1, help='manual seed')
     parser.add_argument('--init_method', default='tcp://127.0.0.1:9888', type=str,
                         help='url used to set up distributed training')
+    parser.add_argument('-d', '--distributed', action='store_true', default=False, help='distributed training,  added to suffix!!!!')
     # logging, output directory, 
+    parser.add_argument('--debug', action='store_true', help='defbug status, earlier for train/eval')
     parser.add_argument('-p', '--print-freq', default=50, type=int,)
     parser.add_argument('--weight', default='None', type=str, help='pretrained weights for ininitialization')
     parser.add_argument('--overwrite', action='store_true', help='overwrite the output dir if already exists')

@@ -7,21 +7,25 @@ This repository provides the official implementation of our paper *"DSIN: Dynami
 ## System requirements
 - Linux: Ubuntu 16.04
 - Graphics: Nvidia GPU (RTX 4090 recommended)
+- Python: 3.10
 - Anaconda3
-- PyTorch
   
 ## Installation guide
 
 ### 1. Download project
-``` https://github.com/koala-say/DSIN_Pytorch.git ```
+``` 
+https://github.com/koala-say/DSIN_Pytorch.git
+cd DSIN_Pytorch
+```
 
 ### 2. Prepare the Conda enviroments
 
 ``` 
 cd DSIN_PyTorch
-conda create -n dsin python=3.9
+conda create -n dsin python=3.10 -y
 conda activate dsin
-cd DSIN_Pytorch
+pip install -r requirements.txt
+pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu121
 pip install -r requirements.txt
 ```
 
@@ -48,3 +52,5 @@ pip install -r requirements.txt
 If you need any help or are looking for cooperation feel free to contact us. 1284897384@qq.com
 
 
+## License
+This project is covered under the MIT License.
