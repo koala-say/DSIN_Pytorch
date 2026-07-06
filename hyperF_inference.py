@@ -35,20 +35,21 @@ if __name__ == '__main__':
 
     model_name = 'E-NERV'
     rect_l = 0.2
-    num_inner_list = [22500]
+    num_inner_list = [1600]
     class_max = 3
     loss_max = 0.001
     loss_hope = 0.001
     num_cores = 10  # num_cpu
     mode = 'encode' # 'encode' or 'decode'
-    model_path = "model_train_best.pth"
+    model_path = "compress_model/model_train_best.pth"
     ### NERV网络
     from utils.model import CustomDataSet, Generator
-    model = Generator(embed_length=160, stem_dim_num='1024_1', fc_hw_dim='8_8_64', expansion=8, 
+    model = Generator(embed_length=160, stem_dim_num='1024_1', fc_hw_dim='8_8_75', expansion=8,
         num_blocks=1, norm='none', act='leaky01', bias = True, reduction=2, conv_type='conv',
         stride_list=[4, 4, 2, 2, 2],  sin_res=False,  lower_width=32, sigmoid=False)
     dict = torch.load(model_path)['state_dict']
     model.load_state_dict(dict)
+
 
     # encoding save path
     Save_Param_Path = f'./compressed_result/{model_name}_l_{str(rect_l)[0] + str(rect_l)[2:]}/'

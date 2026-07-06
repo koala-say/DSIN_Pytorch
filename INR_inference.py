@@ -18,12 +18,12 @@ from utils.utils_inr import *
 
 def main():
     parser = argparse.ArgumentParser()
-    # dataset parameters
+    # compress_dataset parameters
     parser.add_argument('--vid',  default=[None], type=int,  nargs='+', help='video id list for training')
     parser.add_argument('--scale', type=int, default=1, help='scale-up facotr for data transformation,  added to suffix!!!!')
     parser.add_argument('--frame_gap', type=int, default=1, help='frame selection gap')
     parser.add_argument('--augment', type=int, default=0, help='augment frames between frames,  added to suffix!!!!')
-    parser.add_argument('--dataset', type=str, default='/home/songhanxiao/code_python/compress_code/segment/Data_AbdomenCT-1K/AbdomenCT-1K_3472_norm', help='dataset',)
+    parser.add_argument('--dataset', type=str, default='compress_dataset\Abdomen-1k', help='compress_dataset',)
     parser.add_argument('--test_gap', default=1, type=int, help='evaluation gap')
     parser.add_argument('--embed', type=str, default='1.25_80', help='base value/embed length for position encoding')
     parser.add_argument('--stem_dim_num', type=str, default='1024_1', help='hidden dimension and length')
@@ -109,15 +109,15 @@ def train(local_rank, args):
 
     ##### get model params and flops #####
     total_params = sum([p.data.nelement() for p in model.parameters()]) / 1e6
-    if local_rank in [0, None]:
-        params = sum([p.data.nelement() for p in model.parameters()]) / 1e6
-
-        print(f'{args}\n {model}\n Model Params: {params}M')
-        with open('{}/rank0.txt'.format(args.outf), 'a') as f:
-            f.write(str(model) + '\n' + f'Params: {params}M\n')
-        writer = SummaryWriter(os.path.join(args.outf, f'param_{total_params}M', 'tensorboard'))
-    else:
-        writer = None
+    # if local_rank in [0, None]:
+    #     params = sum([p.data.nelement() for p in model.parameters()]) / 1e6
+    #
+    #     print(f'{args}\n {model}\n Model Params: {params}M')
+    #     with open('{}/rank0.txt'.format(args.outf), 'a') as f:
+    #         f.write(str(model) + '\n' + f'Params: {params}M\n')
+    #     writer = SummaryWriter(os.path.join(args.outf, f'param_{total_params}M', 'tensorboard'))
+    # else:
+    #     writer = None
 
     # distrite model to gpu or parallel
     model = model.cuda()
@@ -243,15 +243,10 @@ def train(local_rank, args):
             is_train_best = train_psnr[-1] > train_best_psnr
             train_best_psnr = train_psnr[-1] if train_psnr[-1] > train_best_psnr else train_best_psnr
             train_best_msssim = train_msssim[-1] if train_msssim[-1] > train_best_msssim else train_best_msssim
-            writer.add_scalar(f'Train/PSNR_{h}X{w}_gap{args.frame_gap}', train_psnr[-1].item(), epoch+1)
-            writer.add_scalar(f'Train/MSSSIM_{h}X{w}_gap{args.frame_gap}', train_msssim[-1].item(), epoch+1)
-            writer.add_scalar(f'Train/best_PSNR_{h}X{w}_gap{args.frame_gap}', train_best_psnr.item(), epoch+1)
-            writer.add_scalar(f'Train/best_MSSSIM_{h}X{w}_gap{args.frame_gap}', train_best_msssim, epoch+1)
             print_str = '\t{}p: current: {:.2f}\t best: {:.2f}\t msssim_best: {:.4f}\t'.format(h, train_psnr[-1].item(), train_best_psnr.item(), train_best_msssim.item())
             print(print_str, flush=True)
             with open('{}/rank0.txt'.format(args.outf), 'a') as f:
                 f.write(print_str + '\n')
-            writer.add_scalar('Train/lr', lr, epoch+1)
             epoch_end_time = datetime.now()
             print("Time/epoch: \tCurrent:{:.2f} \tAverage:{:.2f}".format( (epoch_end_time - epoch_start_time).total_seconds(), \
                     (epoch_end_time - start).total_seconds() / (epoch + 1 - args.start_epoch) ))
@@ -281,10 +276,6 @@ def train(local_rank, args):
                 is_val_best = val_psnr[-1] > val_best_psnr
                 val_best_psnr = val_psnr[-1] if is_val_best else val_best_psnr
                 val_best_msssim = val_msssim[-1] if val_msssim[-1] > val_best_msssim else val_best_msssim
-                writer.add_scalar(f'Val/PSNR_{h}X{w}_gap{args.test_gap}', val_psnr[-1], epoch+1)
-                writer.add_scalar(f'Val/MSSSIM_{h}X{w}_gap{args.test_gap}', val_msssim[-1], epoch+1)
-                writer.add_scalar(f'Val/best_PSNR_{h}X{w}_gap{args.test_gap}', val_best_psnr, epoch+1)
-                writer.add_scalar(f'Val/best_MSSSIM_{h}X{w}_gap{args.test_gap}', val_best_msssim, epoch+1)
                 print_str += '\t{}p: current: {:.2f}\tbest: {:.2f} \tbest_msssim: {:.4f}\t Time/epoch: {:.2f}'.format(h, val_psnr[-1].item(),
                      val_best_psnr.item(), val_best_msssim.item(), (val_end_time - val_start_time).total_seconds())
                 print(print_str)

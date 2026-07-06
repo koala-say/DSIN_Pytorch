@@ -18,14 +18,19 @@ https://github.com/koala-say/DSIN_Pytorch.git
 cd DSIN_Pytorch
 ```
 
-### 2. Prepare the Conda enviroments
-
+### 2. Create conda environment
 ``` 
-cd DSIN_PyTorch
 conda create -n dsin python=3.10 -y
 conda activate dsin
-pip install -r requirements.txt
-pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu121
+```
+
+### 3. Install PyTorch (CUDA 11.8 recommended)
+```
+pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu118
+```
+
+### 4. Install dependencies
+```
 pip install -r requirements.txt
 ```
 
